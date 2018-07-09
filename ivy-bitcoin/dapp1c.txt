@@ -1,0 +1,7 @@
+contract LockWithPreimage(hash: Sha256(Bytes), publicKey: PublicKey, val: Value) {
+  clause spend(preimage: Bytes, sig: Signature) {
+    verify sha256(preimage) == hash 
+    verify checkSig(publicKey, sig)
+    unlock val
+  }
+}

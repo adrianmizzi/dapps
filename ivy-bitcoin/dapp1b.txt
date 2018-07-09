@@ -1,0 +1,18 @@
+contract LockUntilTimeWithTimeout(
+  sender: PublicKey,
+  recipient: PublicKey,
+  time: Time,
+  timeout: Time,
+  val: Value
+) {
+  clause spend(recipientSig: Signature) {
+    verify checkSig(recipient, recipientSig)
+    verify after(time)
+    unlock val
+  }
+  clause timeout(senderSig: Signature) {
+    verify after(timeout)
+    verify checkSig(sender, senderSig)
+    unlock val
+  }
+}

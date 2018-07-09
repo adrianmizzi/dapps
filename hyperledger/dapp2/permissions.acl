@@ -1,0 +1,71 @@
+rule ChairmanCanReadAllData {
+    description: "Allow chairman to read all data"
+    participant: "dapp2.Chairman"
+    operation: READ
+    resource: "dapp2.*"
+    action: ALLOW
+}
+
+rule ChairmanCanCreateElections {
+    description: "Allow chairman to create an election"
+    participant: "dapp2.Chairman"
+    operation: ALL
+    resource: "dapp2.Election"
+    action: ALLOW
+}
+
+rule ChairmanCanCreateCandidates {
+    description: "Allow chairman to create candidates for election"
+    participant: "dapp2.Chairman"
+    operation: ALL
+    resource: "dapp2.Candidate"
+    action: ALLOW
+}
+
+rule ChairmanCanSubmitCreateElections {
+    description: "Allow chairman to submit create election transactions"
+    participant: "dapp2.Chairman"
+    operation: CREATE
+    resource: "dapp2.CreateElection"
+    action: ALLOW
+}
+
+rule VotersCanSubmitVoteTransaction {
+    description: "Allow voters to vote"
+    participant: "dapp2.Voter"
+    operation: CREATE
+    resource: "dapp2.Vote"
+    action: ALLOW
+}
+
+rule VotersCanSeeCandidatesAndElections {
+    description: "Allow voters to see elections and candidates"
+    participant: "dapp2.Voter"
+    operation: READ
+    resource: "dapp2.*"
+    action: ALLOW
+}
+
+rule SystemACL {
+  description:  "System ACL to permit all access"
+  participant: "org.hyperledger.composer.system.Participant"
+  operation: ALL
+  resource: "org.hyperledger.composer.system.**"
+  action: ALLOW
+}
+
+rule NetworkAdminUser {
+    description: "Grant business network administrators full access to user resources"
+    participant: "org.hyperledger.composer.system.NetworkAdmin"
+    operation: ALL
+    resource: "**"
+    action: ALLOW
+}
+
+rule NetworkAdminSystem {
+    description: "Grant business network administrators full access to system resources"
+    participant: "org.hyperledger.composer.system.NetworkAdmin"
+    operation: ALL
+    resource: "org.hyperledger.composer.system.**"
+    action: ALLOW
+}

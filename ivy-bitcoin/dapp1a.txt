@@ -1,0 +1,6 @@
+contract Lock(publicKey: PublicKey, val: Value) {
+  clause spend(sig: Signature) {
+    verify checkSig(publicKey, sig)
+    unlock val
+  }
+}

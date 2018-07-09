@@ -1,0 +1,48 @@
+rule EverybodyCanReadAndUpdateEverything {
+    description: "Allow all participants read access to all resources"
+    participant: "dapp1b.User"
+    operation: ALL
+    resource: "dapp1b.*"
+    action: ALLOW
+}
+
+rule EverybodyCanSubmitPayTransactions {
+    description: "Allow all participants to submit payment transactions"
+    participant: "dapp1b.User"
+    operation: CREATE
+    resource: "dapp1b.DepositTransaction"
+    action: ALLOW
+}
+
+rule OwnerHasFullAccessToTheirAssets {
+    description: "Allow all participants full access to their assets"
+    participant(p): "dapp1b.User"
+    operation: ALL
+    resource(r): "dapp1b.Wallet"
+    condition: (r.owner.getIdentifier() === p.getIdentifier())
+    action: ALLOW
+}
+
+rule SystemACL {
+  description:  "System ACL to permit all access"
+  participant: "org.hyperledger.composer.system.Participant"
+  operation: ALL
+  resource: "org.hyperledger.composer.system.**"
+  action: ALLOW
+}
+
+rule NetworkAdminUser {
+    description: "Grant business network administrators full access to user resources"
+    participant: "org.hyperledger.composer.system.NetworkAdmin"
+    operation: ALL
+    resource: "**"
+    action: ALLOW
+}
+
+rule NetworkAdminSystem {
+    description: "Grant business network administrators full access to system resources"
+    participant: "org.hyperledger.composer.system.NetworkAdmin"
+    operation: ALL
+    resource: "org.hyperledger.composer.system.**"
+    action: ALLOW
+}

@@ -1,0 +1,41 @@
+namespace dapp2
+
+enum ElectionStatus {
+  o OPEN
+  o CLOSED
+}
+
+participant Chairman identified by name {
+  o String name
+}
+
+participant Voter identified by voterId {
+  o String voterId
+}
+
+asset Election identified by electionId {
+  o String electionId
+  --> Chairman chairman
+  o ElectionStatus status default = 'OPEN'
+  --> Candidate[] candidates
+}
+
+asset Candidate identified by name {
+  o String name
+  --> Voter[] voters optional
+}
+
+transaction CreateElection {
+  o String electionId
+  o String[] candidateNames
+}
+
+transaction Vote {
+  --> Election election
+  --> Voter voter
+  --> Candidate candidate
+}
+
+transaction CloseElection {
+  --> Election election
+}

@@ -1,0 +1,99 @@
+namespace dapp1b
+
+participant User identified by name {
+  o String name
+  --> Wallet wallet
+}
+
+asset Wallet identified by walletId {
+  o String walletId
+  o Long balance
+}
+
+// Escrow Definitions
+enum EscrowStatus {
+  o OPEN
+  o CLOSED_WITHDRAWN
+  o CLOSED_REFUNDED
+}
+
+asset EscrowAccount identified by accountId {
+  o String accountId
+  o Long amount
+  --> User sender
+  --> User recipient
+  o DateTime waitUntil
+  o DateTime expiry
+  o DateTime closedTime optional
+  o EscrowStatus status default = 'OPEN'
+}
+
+asset EscrowAccountWithLock identified by accountId {
+  o String accountId
+  o Long amount
+  --> User sender
+  --> User recipient
+  o DateTime waitUntil
+  o DateTime expiry
+  o DateTime closedTime optional
+  o EscrowStatus status default = 'OPEN'
+  o String hash
+}
+
+transaction DepositTransaction {
+  o String depositId
+  o Long value
+  --> User sender
+  --> User recipient
+  o DateTime waitUntil
+  o DateTime expiry
+}
+
+transaction DepositWithLockTransaction {
+  o String depositId
+  o Long value
+  --> User sender
+  --> User recipient
+  o DateTime waitUntil
+  o DateTime expiry
+  o String hash
+}
+
+transaction WithdrawTransaction {
+  --> EscrowAccount account
+}
+
+transaction WithdrawWithLockTransaction {
+  --> EscrowAccountWithLock account
+  o String preimage
+}
+
+transaction RefundTransaction {
+  --> EscrowAccount account
+}
+
+event DepositEvent {
+  o String escrowAccountId
+  o Long value
+  --> User sender
+  --> User recipient
+  o DateTime waitUntil
+  o DateTime expiry
+}
+
+event WithdrawalEvent {
+  o String escrowAccountId
+  o Long value
+  --> User recipient
+}
+
+event RefundEvent {
+  o String escrowAccountId
+  o Long value
+  --> User sender
+}
+
+// DEMO SPECIFIC definition
+transaction SetupDemo {
+
+}
